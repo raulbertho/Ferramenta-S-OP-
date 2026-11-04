@@ -367,17 +367,29 @@ def atualizar_food(wb, D, food, nbo_flag, mes, ano, inicio, fim):
 # ---------------------------------------------------------------- principal
 def main():
     ap = argparse.ArgumentParser(description="Atualiza o Order Fill por Base")
-    ap.add_argument("--pasta", default=PASTA_PADRAO, help="pasta com os arquivos de entrada")
+    ap.add_argument("--pasta", help="pasta com os arquivos de entrada (padrão: a pasta do script; "
+                                    "se lá não houver planilhas, a pasta Order Fill do SharePoint)")
     ap.add_argument("--base", help="arquivo Order Fill a atualizar (padrão: o mais recente da pasta)")
     ap.add_argument("--ate", help="data de corte dd/mm/aaaa (padrão: último dia com faturamento E ruptura)")
     ap.add_argument("--saida", help="arquivo de saída")
     a = ap.parse_args()
-    pasta = Path(a.pasta)
+    if a.pasta:
+        pasta = Path(a.pasta)
+    else:
+        pasta = Path(__file__).resolve().parent
+        if not achar(pasta, "order", "fill") and Path(PASTA_PADRAO).exists():
+            pasta = Path(PASTA_PADRAO)
+    print(f"Pasta:   {pasta}")
+    if not pasta.exists():
+        sys.exit("Essa pasta não existe. Confira o caminho.")
 
     base = Path(a.base) if a.base else achar(pasta, "order", "fill")
     depara = achar(pasta, "de", "para")
     if not base or not depara:
-        sys.exit("Não encontrei o arquivo base (Order Fill) ou o de-para na pasta.")
+        planilhas = sorted(p.name for p in pasta.glob("*.xls*"))
+        sys.exit("Não encontrei " + ("a planilha Order Fill" if not base else "o de-para") + " nessa pasta.\n"
+                 "Coloque nela: planilha Order Fill, de-para, 3 faturamentos e 3 rupturas.\n"
+                 "Planilhas encontradas: " + (", ".join(planilhas) if planilhas else "nenhuma"))
     print(f"Base:    {base.name}\nDe-para: {depara.name}")
 
     dados = {}

@@ -10,12 +10,12 @@ Script que atualiza o arquivo **Order Fill por Base** com os dados do mês corre
 2. Abra o Prompt de Comando e rode:
 
 ```bash
-pip install -r requirements.txt
+py -m pip install -r requirements.txt
 ```
 
 ## Toda semana
 
-1. Coloque na pasta do Order Fill (`...\01. Bases Importantes\Order Fill`):
+1. Coloque **na mesma pasta do script** (`order_fill`):
    - o arquivo Order Fill mais recente (o script sempre usa o mais novo da pasta);
    - o **de-para** de códigos (nome com "de-para");
    - o **faturamento** de cada marca exportado do Power BI: nomes com `Fat` e `BK`, `PLK` ou `SBX`
@@ -31,13 +31,13 @@ A data de corte é o último dia que tem **faturamento e ruptura** ao mesmo temp
 Para escolher outra data:
 
 ```bash
-python atualizar_order_fill.py --ate 10/11/2026
+py atualizar_order_fill.py --ate 10/11/2026
 ```
 
 Para usar outra pasta:
 
 ```bash
-python atualizar_order_fill.py --pasta "C:\caminho\da\pasta"
+py atualizar_order_fill.py --pasta "C:\caminho\da\pasta"
 ```
 
 ## O que o script faz
