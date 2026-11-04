@@ -1,0 +1,5 @@
+# Planilhas com dados da empresa não vão para o repositório
+*.xlsx
+*.xls
+*.xlsm
+__pycache__/
